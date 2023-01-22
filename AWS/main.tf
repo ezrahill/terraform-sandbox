@@ -9,21 +9,27 @@ resource "aws_vpc" "acg_vpc" {
 }
 
 # Create Subnets
-resource "aws_subnet" "acg_app_a" {
-  vpc_id     = aws_vpc.acg_vpc.id
-  cidr_block = "192.168.212.0/25"
+data "aws_availability_zones" "az_list" {}
+
+resource "aws_subnet" "acg_app_subnets" {
+  count             = 2
+  vpc_id            = aws_vpc.acg_vpc.id
+  cidr_block        = element(var.app_subnets, count.index)
+  availability_zone = element(data.aws_availability_zones.az_list.names, count.index)
 
   tags = {
-    Name = "${var.prefix}_${var.env}_app_a"
+    Name = "${var.prefix}_${var.env}_app_${count.index}"
   }
 }
 
-resource "aws_subnet" "acg_data_a" {
-  vpc_id     = aws_vpc.acg_vpc.id
-  cidr_block = "192.168.212.128/25"
+resource "aws_subnet" "acg_data_subnets" {
+  count             = 2
+  vpc_id            = aws_vpc.acg_vpc.id
+  cidr_block        = element(var.data_subnets, count.index)
+  availability_zone = element(data.aws_availability_zones.az_list.names, count.index)
 
   tags = {
-    Name = "${var.prefix}_${var.env}_data_a"
+    Name = "${var.prefix}_${var.env}_data_${count.index}"
   }
 }
 
