@@ -1,0 +1,10 @@
+#cloud-config
+runcmd:
+    - yum update -y
+    - amazon-linux-extras install java-openjdk11 -y
+
+packages:
+    - wget
+    - net-tools
+    - git
+    - jq

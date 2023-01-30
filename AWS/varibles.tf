@@ -27,3 +27,9 @@ variable "data_subnets" {
   type        = list(string)
   default     = ["192.168.212.128/26", "192.168.212.192/26"]
 }
+
+variable "dev_key" {
+  description = "Dev Key Pair"
+  type        = string
+  default     = ""
+}
